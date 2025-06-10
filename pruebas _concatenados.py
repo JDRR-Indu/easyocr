@@ -7,7 +7,7 @@ import time
 lector = easyocr.Reader(['en'], gpu=False)
 
 # Variables globales
-rectangulos_rois = []       # Lista de ROI: (x, y, w, h)
+rectangulos_rois = []
 numeros_detectados = []     # Números detectados por ROI
 confianzas = []             # Confiabilidad por ROI
 seleccionando = False
@@ -17,7 +17,7 @@ procesando = False
 bloqueo = threading.Lock()
 ultimos_valores = []  # Lista paralela a numeros_detectados
 
-# Archivo de registro
+# Archivo donde se guardan los registros
 log_file = "registro_ocr.txt"
 
 def registrar_evento_ocr_completo(lista_textos):
@@ -105,14 +105,14 @@ def ocr_thread(frame, rois):
                         print(f"[ALERTA ROI {i}] Salto demasiado grande ({anterior} -> {nuevo_valor_int})")
                 ultimos_valores[i] = nuevo_valor_int
             else:
-                # Si no es un número válido, no actualizar
+                # Si no es un número válido, no actualiza
                 print(f"[ALERTA ROI {i}] Valor no numérico detectado: '{nuevo_valor}'")
 
 def main():
     global procesando
-    video_path = r"video\shinhan.mov"
-    cap = cv2.VideoCapture(video_path)
-  # Cambiar a 0 si deseas usar la cámara predeterminada
+    video_path = r"video\shinhan.mov" #eliminas esto y 
+    cap = cv2.VideoCapture(video_path) #remplaza  esto por esto: cap = cv2.VideoCapture(1)
+    
     if not cap.isOpened():
         print("No se pudo abrir la cámara.")
         return
@@ -151,7 +151,7 @@ def main():
 
         cv2.imshow("Video", frame)
         key = cv2.waitKey(1) & 0xFF
-        if key == 27:  # ESC
+        if key == 27:  # ESC para finalizar programa
             break
 
     cap.release()
